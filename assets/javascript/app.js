@@ -9,7 +9,7 @@ $(document).ready(function() {
     };
     firebase.initializeApp(config);
 
-    // A variable to reference the database.
+    // Reference the database.
     var database = firebase.database();
 
     // Variables for the onClick event
@@ -26,7 +26,7 @@ $(document).ready(function() {
         firstTrain = $("#first-train").val().trim();
         frequency = $("#frequency").val().trim();
 
-        // Pushing to database
+        // Push to database
         database.ref().push({
             name: name,
             destination: destination,
@@ -40,9 +40,9 @@ $(document).ready(function() {
     database.ref().on("child_added", function(childSnapshot) {
         var nextArr;
         var minAway;
-        // Chang year so first train comes before now
+        // Changes the  year so first train comes before now
         var firstTrainNew = moment(childSnapshot.val().firstTrain, "hh:mm").subtract(1, "years");
-        // Difference between the current and firstTrain
+        // Difference between the current train and first train
         var diffTime = moment().diff(moment(firstTrainNew), "minutes");
         var remainder = diffTime % childSnapshot.val().frequency;
         // Minutes until next train
@@ -57,7 +57,7 @@ $(document).ready(function() {
             "</td><td>" + nextTrain +
             "</td><td>" + minAway + "</td></tr>");
 
-        // Handle the errors
+        // Any errors
     }, function(errorObject) {
         console.log("Errors handled: " + errorObject.code);
     });
